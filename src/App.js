@@ -60,7 +60,7 @@ function App() {
         data={questions[currentQuestionIndex]} 
         handleAnswer={handleAnswer}
         handleNextQuestion={handleNextQuestion} />
-    ) : <div className='text-3xl text-white font-bold'>Loading...</div>;
+    ) : <div className='text-3xl text-white font-bold'>Samulde makes trivia. Loading...</div>;
 }
 
 export default App;
