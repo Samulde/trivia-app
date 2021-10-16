@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+const API_URL = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container"> 
+      <div className='bg-white text-gray-600 p-10 rounded-lg shadow-md'>
+        <h2 className='text-2xl'>
+          The question
+        </h2>
+        
+      </div>
+      <div className='flex flex-wrap mt-4 justify-around'>
+        <button className='bg-white text w-2/5 p-4 text-gray-600 font-semibold rounded shadow mb-4'>Answer 1</button>
+        <button className='bg-white text w-2/5 p-4 text-gray-600 font-semibold rounded shadow mb-4'>Answer 2</button>
+        <button className='bg-white text w-2/5 p-4 text-gray-600 font-semibold rounded shadow'>Answer 3</button>
+        <button className='bg-white text w-2/5 p-4 text-gray-600 font-semibold rounded shadow'>Answer 4</button>
+      </div>
     </div>
   );
 }
