@@ -10,33 +10,56 @@ function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [endGame, setEndGame] = useState(false)
+  const [showAnswers, setShowsAnswers] = useState(false)
 
   useEffect( () => {
     fetch(API_URL)
       .then(res => res.json())
-      .then(data => {setQuestions(data.results)})
-  }, [])
+      .then(data => {
+        const shuffledData = data.results.map((question) => (
+          {
+            ...question,
+            answers: [
+              question.correct_answer,
+              ...question.incorrect_answers
+            ].sort(()=> Math.random() - 0.5)
+          }))
 
+        setQuestions(shuffledData)
+      })
+    }, [])
 
   const handleAnswer = (answer) => {
+    
+
+    if(!showAnswers){
+      if (answer === questions[currentQuestionIndex].correct_answer) {
+        setScore(score + 1)
+      }
+    }
+    setShowsAnswers(true)
+
+  };
+
+  const handleNextQuestion = () => {
     const newIndex = currentQuestionIndex + 1
     setCurrentQuestionIndex(newIndex)
-
-    if (answer === questions[currentQuestionIndex].correct_answer) {
-      setScore(score + 1)
-    }
 
     if (newIndex === questions.length){
       setEndGame(true)
     }
-  };
+
+    setShowsAnswers(false)
+
+  }
 
   return endGame ? <Scoreboard score={score} /> : 
       questions.length > 0 ? (
       <QuestionPanel 
+        showAnswers={showAnswers}
         data={questions[currentQuestionIndex]} 
-        handleAnswer={handleAnswer} />
-
+        handleAnswer={handleAnswer}
+        handleNextQuestion={handleNextQuestion} />
     ) : <div className='text-3xl text-white font-bold'>Loading...</div>;
 }
 
