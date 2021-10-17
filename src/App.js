@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import QuestionPanel from "./component/QuestionPanel";
 import Scoreboard from "./component/Scoreboard";
+import { loadQuestions } from "./reducers/allQuestionsReducer";
+import { loadCurrentQuestion } from "./reducers/currentQuestionReducer";
+
 
 const API_URL = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
 
@@ -11,6 +15,9 @@ function App() {
   const [score, setScore] = useState(0)
   const [endGame, setEndGame] = useState(false)
   const [showAnswers, setShowsAnswers] = useState(false)
+
+
+  const dispatch = useDispatch()
 
   useEffect( () => {
     fetch(API_URL)
@@ -26,8 +33,11 @@ function App() {
           }))
 
         setQuestions(shuffledData)
+        dispatch(loadQuestions(data.results))
+        dispatch(loadCurrentQuestion(data.results[0]))
+        
       })
-    }, [])
+    }, [dispatch])
 
   const handleAnswer = (answer) => {
     

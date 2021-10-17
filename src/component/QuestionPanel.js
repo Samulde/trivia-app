@@ -2,11 +2,23 @@ import React from 'react'
 import ReactHtmlParser from 'react-html-parser';
 import AnswerButton from './AnswerButton';
 import NextButton from "./NextButton";
+import { useSelector, useDispatch } from 'react-redux';
+import { nextQuestionActionCreator } from '../reducers/currentQuestionReducer';
 
 
 const QuestionPanel = ({ data: {question, correct_answer, answers }, 
     handleAnswer, showAnswers, handleNextQuestion}) => {
-  
+    
+  const dispatch = useDispatch()
+  const state = useSelector(state => state)
+
+  const testStore = (event) => {
+    console.log(event)
+    dispatch(nextQuestionActionCreator())
+    console.log('This button is working')
+
+  }
+
   return (
     <div className="flex flex-col"> 
       <div className='bg-white text-gray-600 p-10 rounded-lg shadow-md text-center'>
@@ -31,6 +43,7 @@ const QuestionPanel = ({ data: {question, correct_answer, answers },
         }
         </div>
         {showAnswers && <NextButton handleNextQuestion={handleNextQuestion}/>}
+        <button onClick={testStore}>I exist to do nothing</button>
     </div>
   )
 }
