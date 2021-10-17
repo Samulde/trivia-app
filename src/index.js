@@ -8,6 +8,7 @@ import combinedReducers from './reducers/combinedReducers';
 
 
 const store = createStore(combinedReducers)
+store.subscribe(() => console.log('The state of the store is: ', store.getState()))
 
 ReactDOM.render(
   <Provider store={store}>

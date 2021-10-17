@@ -1,76 +1,40 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import QuestionPanel from "./component/QuestionPanel";
 import Scoreboard from "./component/Scoreboard";
 import { loadQuestions } from "./reducers/allQuestionsReducer";
 import { loadCurrentQuestion } from "./reducers/currentQuestionReducer";
 
 
-const API_URL = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
+const API_URL = 'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
 
 function App() {
 
-  const [questions, setQuestions] = useState([])
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [score, setScore] = useState(0)
-  const [endGame, setEndGame] = useState(false)
-  const [showAnswers, setShowsAnswers] = useState(false)
-
-
   const dispatch = useDispatch()
+  const questions = useSelector(state => state.allQuestions)
+  const appState = useSelector(state => state.appState)
 
   useEffect( () => {
     fetch(API_URL)
       .then(res => res.json())
       .then(data => {
-        const shuffledData = data.results.map((question) => (
-          {
-            ...question,
-            answers: [
-              question.correct_answer,
-              ...question.incorrect_answers
-            ].sort(()=> Math.random() - 0.5)
-          }))
-
-        setQuestions(shuffledData)
         dispatch(loadQuestions(data.results))
         dispatch(loadCurrentQuestion(data.results[0]))
-        
       })
+
     }, [dispatch])
 
-  const handleAnswer = (answer) => {
-    
-
-    if(!showAnswers){
-      if (answer === questions[currentQuestionIndex].correct_answer) {
-        setScore(score + 1)
-      }
-    }
-    setShowsAnswers(true)
-
-  };
-
-  const handleNextQuestion = () => {
-    const newIndex = currentQuestionIndex + 1
-    setCurrentQuestionIndex(newIndex)
-
-    if (newIndex === questions.length){
-      setEndGame(true)
-    }
-
-    setShowsAnswers(false)
-
+  
+  switch (appState) {
+    case 'SCOREBOARD':
+      return <Scoreboard />
+    case 'TRIVIA':
+      return questions.length > 0 
+      ? <QuestionPanel /> 
+      : <div className='text-3xl text-white font-bold'>Samulde makes trivia. Loading...</div>
+    default:
+      return <div className='text-3xl text-red-200 font-bold'>An error has occured...</div>
   }
-
-  return endGame ? <Scoreboard score={score} /> : 
-      questions.length > 0 ? (
-      <QuestionPanel 
-        showAnswers={showAnswers}
-        data={questions[currentQuestionIndex]} 
-        handleAnswer={handleAnswer}
-        handleNextQuestion={handleNextQuestion} />
-    ) : <div className='text-3xl text-white font-bold'>Samulde makes trivia. Loading...</div>;
 }
 
 export default App;

@@ -1,11 +1,15 @@
+import ReactHtmlParser from 'react-html-parser';
+
 const initialState = {
   currentIndex: 0,
-  currentQuestion: null
+  showAnswers: false,
+  question: '',
+  correct_answer: '',
+  answers: []
 }
 
 
 const currentQuestionReducer = (state = initialState, action) => {
-  console.log(state)
   switch (action.type) {
     case 'NEXT':
       return {
@@ -14,20 +18,49 @@ const currentQuestionReducer = (state = initialState, action) => {
       }
     
     case 'LOAD':
+
+      const parsedAnswers = action.data.answers
+        .map((answer) => ReactHtmlParser(answer)[0])
+
+
       return {
           currentIndex: state.currentIndex,
+          showAnswers: state.showAnswers,
           question: action.data.question,
           correct_answer: action.data.correct_answer,
-          answers: action.data.answers
+          answers: parsedAnswers
         }
   
+    case 'REVEAL-ON': 
+        return {
+          ...state,
+          showAnswers: true
+        }
+
+    case 'REVEAL-OFF':
+      return {
+        ...state,
+        showAnswers: false
+      }    
+
     default:
       return state
   }
 }
 
+export const showAnswer = () => {
+  return {
+    type: 'REVEAL-ON'
+  }
+}
 
-export const nextQuestionActionCreator = () => {
+export const hideAnswer = () => {
+  return {
+    type: 'REVEAL-OFF'
+  }
+}
+
+export const questionIndexIncrement = () => {
   return {
     type: 'NEXT'
   }
