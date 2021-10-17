@@ -13,12 +13,12 @@ const AnswerButton = ({ answer, textColour }) => {
   
     console.log(buttonText)
     console.log(state.correct_answer)
-    
+
     if ( buttonText === state.correct_answer ) {
       dispatch(increaseScore())
     }
   
-    dispatch(showAnswer())
+    dispatch(showAnswer(buttonText))
     dispatch(questionIndexIncrement())
     console.log(buttonText)
   }

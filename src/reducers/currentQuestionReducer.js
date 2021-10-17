@@ -5,7 +5,8 @@ const initialState = {
   showAnswers: false,
   question: '',
   correct_answer: '',
-  answers: []
+  answers: [],
+  answerClicked: null
 }
 
 
@@ -34,13 +35,15 @@ const currentQuestionReducer = (state = initialState, action) => {
     case 'REVEAL-ON': 
         return {
           ...state,
-          showAnswers: true
+          showAnswers: true,
+          answerClicked: action.data
         }
 
     case 'REVEAL-OFF':
       return {
         ...state,
-        showAnswers: false
+        showAnswers: false,
+        answerClicked: null
       }    
 
     default:
@@ -48,9 +51,10 @@ const currentQuestionReducer = (state = initialState, action) => {
   }
 }
 
-export const showAnswer = () => {
+export const showAnswer = ( clicked ) => {
   return {
-    type: 'REVEAL-ON'
+    type: 'REVEAL-ON',
+    data: clicked
   }
 }
 
