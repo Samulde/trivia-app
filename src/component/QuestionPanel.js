@@ -7,7 +7,6 @@ const QuestionPanel = () => {
     
   const state = useSelector(state => state.currentQuestion)
 
-  console.log(state)
   return (
     <div className="flex flex-col"> 
       <div className='bg-white text-gray-600 p-10 rounded-lg shadow-md text-center'>
@@ -20,12 +19,22 @@ const QuestionPanel = () => {
         {state.answers.map((choice, idx) => {
           let textColour = 'text-gray-600'
           
+          console.log(choice === state.answerClicked)
+
           if (state.showAnswers) {
+            if ( choice === state.correct_answer ) {
+              textColour = 'text-green-500'
+            } else if ( state.answerClicked === choice ) {
+              textColour = 'text-red-500'
+            } else {
+              textColour = 'text-gray-400'
+            }
+
             
-            textColour = state.answerClicked === choice ? 'text-red-500' : textColour
-            textColour = choice === state.correct_answer ? 'text-green-500' : textColour
+
           }
-        
+          
+          console.log(textColour)
           return(
             <AnswerButton key={idx} answer={choice} 
               textColour={textColour}/>)}

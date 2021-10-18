@@ -4,9 +4,9 @@ import QuestionPanel from "./component/QuestionPanel";
 import Scoreboard from "./component/Scoreboard";
 import { loadQuestions } from "./reducers/allQuestionsReducer";
 import { loadCurrentQuestion } from "./reducers/currentQuestionReducer";
+import SettingForm from "./component/SettingsForm";
 
-
-const API_URL = 'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
+const API_URL = 'https://opentdb.com/api.php?amount=3&category=9&difficulty=easy&type=multiple'
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
 
     }, [dispatch])
 
-  
+  // return <SettingForm />
   switch (appState) {
     case 'SCOREBOARD':
       return <Scoreboard />
